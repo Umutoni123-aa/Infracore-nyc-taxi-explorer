@@ -1,0 +1,10 @@
+﻿data/nyc_taxi.db
+data/cleaned/
+data/*.parquet
+data/*.csv
+data/*.geojson
+__pycache__/
+*.pyc
+.env
+node_modules/
+docs/
