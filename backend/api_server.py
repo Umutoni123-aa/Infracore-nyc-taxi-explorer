@@ -73,6 +73,13 @@ def get_stats():
 # --------------------------------------------------
 # BOROUGHS
 # --------------------------------------------------
+def bubble_sort_boroughs(data):
+    n = len(data)
+    for i in range(n):
+        for j in range(n - 1 - i):
+            if data[j]['total_trips'] < data[j+1]['total_trips']:
+                data[j], data[j+1] = data[j+1], data[j]
+    return data
 @app.route('/api/boroughs')
 def get_boroughs():
     """Get list of boroughs."""
@@ -197,6 +204,7 @@ def trips_by_borough():
         conn.close()
 
         data = [dict(row) for row in rows]
+        data = bubble_sort_boroughs(data)
         return jsonify({"success": True, "data": data})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
@@ -319,7 +327,6 @@ def top_routes():
             WHERE pickup_zone IS NOT NULL
             AND dropoff_zone IS NOT NULL
             GROUP BY pickup_zone, dropoff_zone
-            ORDER BY total_trips DESC
             LIMIT ?
         ''', [limit])
         rows = cursor.fetchall()
